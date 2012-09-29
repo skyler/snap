@@ -1,5 +1,6 @@
 import lib.util
 import lib.menu
+import lib.term
 import os
 import subprocess
 
@@ -22,12 +23,14 @@ class project:
         '''Clones project into cache, unless it's already there'''
         lib.util.mkdir_p(cache_path())
         if not os.path.isdir( os.path.join( self.get_cache_path(), '.git' ) ):
+            lib.term.print_c("Cloning...\n",lib.term.BLUE)
             subprocess.call(["git","clone",self.url],cwd=cache_path(),env=git_env)
 
     def fetch(self):
         '''Fetches all remote data'''
         self.clone()
         if not self.fetched:
+            lib.term.print_c("Fetching....\n",lib.term.BLUE)
             self.fetched = True
             subprocess.call(["git","fetch","-v","--all"],
                             cwd=self.get_cache_path(),
@@ -52,6 +55,7 @@ class project:
         '''Checks out the given branch in the local cache repo, does a hard reset'''
         self.fetch()
         cwd = self.get_cache_path()
+        lib.term.print_c("Checking out....\n",lib.term.BLUE)
         with open(os.devnull) as null:
             subprocess.call(["git","branch","-f",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
@@ -60,6 +64,9 @@ class project:
     def get_cache_path(self):
         '''Return relative path to project's repo cache'''
         return os.path.join(cache_path(),self.name)
+
+    def get_snap_dir(self):
+        return os.path.join(self.get_cache_path(),"snap")
         
     def choose_and_checkout_branch(self):
         '''Gives user list of branches to choose from, and checks out the chosen one'''
@@ -69,3 +76,19 @@ class project:
         branch = lib.menu.navigate("Choose a branch from {0}".format(self.name),branches)
         self.checkout(branch)
         return branch
+
+    def get_snapfile_lines(self,fn):
+        lines = []
+        try:
+            with open(os.path.join(self.get_snap_dir(),fn)) as f:
+                for l in f:
+                    lines.append(l.rstrip())
+            return lines
+        except Exception:
+            return []
+
+    def get_excludes(self):
+        return self.get_snapfile_lines("excludes")
+
+    def get_includes(self):
+        return self.get_snapfile_lines("includes")
