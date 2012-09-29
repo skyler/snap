@@ -36,6 +36,7 @@ class project:
     def branches(self):
         '''Lists all current remote braches'''
         self.fetch()
+        subprocess.call(["git","remote","prune","origin"],cwd=self.get_cache_path())
         out = str(subprocess.check_output(["git","branch","-r"],
                                           cwd=self.get_cache_path(),
                                           env=git_env),'utf8')
