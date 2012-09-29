@@ -99,7 +99,33 @@ class project:
         '''Returns project's includes'''
         return self.get_snapfile_lines("includes")
 
-    def pre_snap(self):
-        ps_f = os.path.join(self.get_snap_dir(),"pre_snap")
+    def snap_script(self,script):
+        '''Runs a script in the snap directory'''
+        ps_f = os.path.join(self.get_snap_dir(),script)
+        ps_f_rel = os.path.join("snap",script)
         if os.path.isfile(ps_f):
-            subprocess.call(["snap/pre_snap"],cwd=self.get_cache_path())
+            subprocess.call([ps_f_rel],cwd=self.get_cache_path())
+
+    def post_snap(self):
+        '''Run post_snap'''
+        self.snap_script("post_snap")
+
+    def get_stages(self):
+        stages = []
+        i = 1
+        lines = self.get_snapfile_lines(str(i))
+        while lines != []:
+            stages.append({"lines":lines})
+            if os.path.isfile(os.path.join(self.get_snap_dir(),"pre_"+str(i))):
+                stages[i-1]["pre"] = "pre_"+str(i)
+            else:
+                stages[i-1]["pre"] = False
+            i += 1
+            lines = self.get_snapfile_lines(str(i))
+
+        #If the project doesn't have anything defined, just snap everything with no scripts
+        if stages == {}:
+            return {1:{"lines":["."],"pre":False}}
+
+        return stages
+
