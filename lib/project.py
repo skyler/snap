@@ -3,6 +3,9 @@ import lib.menu
 import os
 import subprocess
 
+git_env = os.environ.copy()
+git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
+
 class project:
 
     def __init__(self,json):
@@ -14,7 +17,7 @@ class project:
         '''Clones project into cache, unless it's already there'''
         lib.util.mkdir_p(cache_path())
         if not os.path.isdir( os.path.join( project_cache_path(self.name), '.git' ) ):
-            os.system("git clone {0} {1}".format(self.url, project_cache_path(self.name)))
+            subprocess.call(["git","clone",self.url],cwd=cache_path(),env=git_env)
 
     def fetch(self):
         '''Fetches all remote data'''
@@ -22,13 +25,15 @@ class project:
         if not self.fetched:
             self.fetched = True
             subprocess.call(["git","fetch","-v","--all"],
-                            cwd=project_cache_path(self.name))
+                            cwd=project_cache_path(self.name),
+                            env=git_env)
 
     def branches(self):
         '''Lists all current remote braches'''
         self.fetch()
         out = str(subprocess.check_output(["git","branch","-r"],
-                                          cwd=project_cache_path(self.name)),'utf8')
+                                          cwd=project_cache_path(self.name),
+                                          env=git_env),'utf8')
         branches = []
         for branch in out.split("\n"):
             if not "HEAD" in branch:
