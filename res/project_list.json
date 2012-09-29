@@ -1,6 +1,18 @@
 [
     {
+        "name":"ccweb",
+        "url":"git@github.com:crypticcandy/ccweb.git"
+    },
+    {
+        "name":"ccapi",
+        "url":"git@github.com:crypticcandy/ccapi.git"
+    },
+    {
         "name":"ccetc",
         "url":"git@github.com:crypticcandy/ccetc.git"
+    },
+    {
+        "name":"nemo",
+        "url":"git@github.com:crypticcandy/nemo.git"
     }
 ]
