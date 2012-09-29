@@ -60,12 +60,14 @@ class project:
             subprocess.call(["git","branch","-f",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
+            subprocess.call(["git","clean","-f","-d"],cwd=cwd)
 
     def get_cache_path(self):
         '''Return relative path to project's repo cache'''
         return os.path.join(cache_path(),self.name)
 
     def get_snap_dir(self):
+        '''Returns full path to project's snap directory'''
         return os.path.join(self.get_cache_path(),"snap")
         
     def choose_and_checkout_branch(self):
@@ -78,6 +80,8 @@ class project:
         return branch
 
     def get_snapfile_lines(self,fn):
+        '''Returns lines from a file in the project's snap directory as a list,
+        or empty list on error'''
         lines = []
         try:
             with open(os.path.join(self.get_snap_dir(),fn)) as f:
@@ -88,7 +92,14 @@ class project:
             return []
 
     def get_excludes(self):
+        '''Returns project's excludes'''
         return self.get_snapfile_lines("excludes")
 
     def get_includes(self):
+        '''Returns project's includes'''
         return self.get_snapfile_lines("includes")
+
+    def pre_snap(self):
+        ps_f = os.path.join(self.get_snap_dir(),"pre_snap")
+        if os.path.isfile(ps_f):
+            subprocess.call(["snap/pre_snap"],cwd=self.get_cache_path())
