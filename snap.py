@@ -3,7 +3,8 @@ import lib.term
 import lib.box
 
 def main():
-    print(lib.box.getProject('ccetc').checkout("master"))
+    project = lib.menu.navigate("Choose project",lib.box.projects)
+    branch  = lib.project.choose_and_checkout_branch(project)
 
 #Run when everything is set up
 main()

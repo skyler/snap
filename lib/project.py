@@ -1,12 +1,14 @@
 import lib.util
+import lib.menu
 import os
 import subprocess
 
 class project:
 
     def __init__(self,json):
-        self.name   = json["name"]
-        self.url    = json["url"]
+        self.name    = json["name"]
+        self.url     = json["url"]
+        self.fetched = False
 
     def clone(self):
         '''Clones project into cache, unless it's already there'''
@@ -17,8 +19,10 @@ class project:
     def fetch(self):
         '''Fetches all remote data'''
         self.clone()
-        subprocess.call(["git","fetch","-v","--all"],
-                        cwd=project_cache_path(self.name))
+        if not self.fetched:
+            self.fetched = True
+            subprocess.call(["git","fetch","-v","--all"],
+                            cwd=project_cache_path(self.name))
 
     def branches(self):
         '''Lists all current remote braches'''
@@ -34,17 +38,27 @@ class project:
         return branches
 
     def checkout(self,branch):
+        '''Checks out the given branch in the local cache repo, does a hard reset'''
         self.fetch()
         cwd = project_cache_path(self.name)
-        subprocess.call(["git","branch","-f",branch],cwd=cwd)
-        subprocess.call(["git","checkout",branch],cwd=cwd)
-        subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
+        with open(os.devnull) as null:
+            subprocess.call(["git","branch","-f",branch],stdout=null,stderr=null,cwd=cwd)
+            subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
+            subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
         
 
 def cache_path():
+    '''Return relative path to repo cache'''
     return os.path.join('.cache','repos')
 
 def project_cache_path(proj):
+    '''Return relative path to project's repo cache'''
     return os.path.join(cache_path(),proj)
 
-
+def choose_and_checkout_branch(project):
+    branches = {}
+    for b in project.branches():
+        branches[b] = b
+    branch = lib.menu.navigate("Choose a branch from {0}".format(project.name),branches)
+    project.checkout(branch)
+    return branch
