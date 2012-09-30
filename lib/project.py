@@ -115,7 +115,7 @@ class project:
         i = 1
         lines = self.get_snapfile_lines(str(i))
         while lines != []:
-            stages.append({"lines":lines})
+            stages.append({"lines":lines,"stage":str(i)})
             if os.path.isfile(os.path.join(self.get_snap_dir(),"pre_"+str(i))):
                 stages[i-1]["pre"] = "pre_"+str(i)
             else:
@@ -124,8 +124,8 @@ class project:
             lines = self.get_snapfile_lines(str(i))
 
         #If the project doesn't have anything defined, just snap everything with no scripts
-        if stages == {}:
-            return {1:{"lines":["."],"pre":False}}
+        if stages == []:
+            return [{"stage":"1","lines":["."],"pre":False}]
 
         return stages
 

@@ -1,7 +1,7 @@
 import sys
 import lib.term
 
-def navigate(title,menu):
+def navigate(title,menu,depth=-1):
     '''Given a menu title and a dict, has the user navigate the dict as if it was a menu.
 
     The user is displayed all the keys of the dicts as options, and they can select by
@@ -41,8 +41,8 @@ def navigate(title,menu):
         return navigate(title,menu)
 
     #If the choice is a dict, do it all again!
-    if isinstance(choice_val,dict):
-        return navigate(choice,choice_val)
+    if isinstance(choice_val,dict) and depth != 0:
+        return navigate(choice,choice_val,depth-1)
     #Otherwise return our val
     else:
         return choice_val
