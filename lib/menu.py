@@ -12,12 +12,15 @@ def navigate(title,menu,depth=-1):
     #setup
     menu_numeric = []
     i = 0
+
+    #Sort the menu by key (returns iterable of tuples (key,value))
+    menu_sorted = lib.util.dict_sorted(menu)
     
     #Do the actual printing
     lib.term.clear()
     header(title)
     print()
-    for (k,v) in menu.items():
+    for (k,v) in menu_sorted:
         print("{0}) {1}".format(i,k))
         menu_numeric.append((k,v))
         i+=1
