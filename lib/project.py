@@ -106,6 +106,15 @@ class project:
         if os.path.isfile(ps_f):
             subprocess.call([ps_f_rel],cwd=self.get_cache_path())
 
+    def has_snap_script(self,script):
+        '''Returns bool of whether or not the project has a script implemented'''
+        ps_f = os.path.join(self.get_snap_dir(),script)
+        return os.path.isfile(ps_f)
+
+    def has_post_snap(self):
+        '''Return True if post_snap is in the project'''
+        return self.has_snap_script("post_snap")
+
     def post_snap(self):
         '''Run post_snap'''
         self.snap_script("post_snap")

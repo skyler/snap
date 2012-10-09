@@ -37,7 +37,5 @@ def snap_project(destinations):
             for line in stage["lines"]:
                 lib.rsync.rsync(project,node,line)
 
-    project.post_snap()
-
 #Run when everything is set up
 main()
