@@ -9,6 +9,7 @@ import subprocess
 def main():
     menu = {
             "Snap to a node group": snap_group,
+            "Snap to a node":snap_node,
             "Snap to testing node": snap_testing
            }
 
@@ -17,6 +18,10 @@ def main():
 def snap_group():
     group = lib.menu.navigate("Choose group to snap to",lib.box.groups,depth=0)
     snap_project(group)
+
+def snap_node():
+    node = lib.menu.navigate("Choose node to snap to",lib.box.nodes,depth=0)
+    snap_project({node["name"]:node})
 
 def snap_testing():
     node = lib.box.getNode("testy")
