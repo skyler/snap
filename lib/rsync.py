@@ -18,7 +18,7 @@ def rsync(project,node,files='.'):
         node["externalips"][0],
         excludes,
         includes,
-        config.snap_prefix+"/opt/cc/"+project.name
+        os.path.join(config.snap_prefix,"opt/cc",project.name)
     )
 
     print(command)

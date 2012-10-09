@@ -115,10 +115,6 @@ class project:
         '''Return True if post_snap is in the project'''
         return self.has_snap_script("post_snap")
 
-    def post_snap(self):
-        '''Run post_snap'''
-        self.snap_script("post_snap")
-
     def get_stages(self):
         stages = []
         i = 1

@@ -2,6 +2,7 @@ import lib.menu
 import lib.term
 import lib.box
 import lib.rsync
+import lib.ssh
 import os
 import subprocess
 
@@ -36,6 +37,12 @@ def snap_project(destinations):
             lib.menu.header("(Stage {0}) snapping to {1}".format(stage["stage"],node_name))
             for line in stage["lines"]:
                 lib.rsync.rsync(project,node,line)
+
+    if project.has_post_snap():
+        for (node_name,node) in destinations.items():
+            print()
+            lib.menu.header("Running post snap script on {0}".format(node_name))
+            lib.ssh.ssh_project(node,"chmod +x snap/post_snap && snap/post_snap",project)
 
 #Run when everything is set up
 main()
