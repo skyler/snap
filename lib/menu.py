@@ -1,7 +1,7 @@
 import sys
 import lib.term
 
-def navigate(title,menu,depth=-1):
+def navigate(title,menu,depth=-1,clear_before=True):
     '''Given a menu title and a dict, has the user navigate the dict as if it was a menu.
 
     The user is displayed all the keys of the dicts as options, and they can select by
@@ -17,7 +17,8 @@ def navigate(title,menu,depth=-1):
     menu_sorted = lib.util.dict_sorted(menu)
     
     #Do the actual printing
-    lib.term.clear()
+    if clear_before: lib.term.clear()
+    else: print()
     header(title)
     print()
     for (k,v) in menu_sorted:

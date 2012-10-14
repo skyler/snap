@@ -14,6 +14,16 @@ def main():
            }
 
     lib.menu.navigate("Choose action",menu)()
+    
+    done_menu = {
+                    "Return to main menu": "r",
+                    "Exit":                "e"
+                }
+    next_action = lib.menu.navigate("Snap done, what do?",done_menu,clear_before=False)
+    if next_action == "r":
+        main()
+    else:
+        pass
 
 def snap_group():
     group = lib.menu.navigate("Choose group to snap to",lib.box.groups,depth=0)
@@ -32,6 +42,7 @@ def snap_project(destinations):
     branch  = project.choose_and_checkout_branch()
     manifest = project.get_manifest()
 
+    lib.term.clear()
     lib.menu.project_check(project)
 
     for (command,payload) in manifest:
@@ -51,12 +62,12 @@ def do_stage(project,stages,destinations):
 
 def do_local_script(project,script):
     lib.menu.header("Running {0} locally".format(script))
-    project.snap_script(script)
+    return project.snap_script(script)
 
 def do_remote_script(project,script,destinations):
     for (node_name,node) in destinations.items():
         lib.menu.header("Running {0} script on {1}".format(script,node_name))
-        lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
+        return lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
 
 #Run when everything is set up
 main()
