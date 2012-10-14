@@ -3,6 +3,7 @@ import lib.menu
 import lib.term
 import os
 import subprocess
+import re
 
 git_env = os.environ.copy()
 git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
@@ -99,38 +100,40 @@ class project:
         '''Returns project's includes'''
         return self.get_snapfile_lines("includes")
 
+    def get_manifest(self):
+        '''Returns the lines of the manifest as a list of tuples. Possible tuples:
+
+        ("stage",["filedir1","filedir2","...")
+        ("local-script","script_name")
+        ("remote-script","script_name")
+
+        If there is no manifest file, pretends it had only the line "stage ."
+        '''
+        lines = self.get_snapfile_lines("manifest")
+        manifest = []
+        for line in lines:
+            sline = re.findall('[^ ]+',line)
+            command = sline[0]
+            if command == "stage":
+                stages = list(map(lambda x: x.strip(), sline[1:]))
+                manifest.append(( "stage",stages))
+            elif command == "local-script":
+                ls = sline[1].strip()
+                manifest.append(("local-script",ls))
+            elif command == "remote-script":
+                rs = sline[1].strip()
+                manifest.append(("remote-script",rs)) 
+
+        if manifest == []:
+            manifest = [("stage",["."])]
+        return manifest
+
     def snap_script(self,script):
         '''Runs a script in the snap directory'''
         ps_f = os.path.join(self.get_snap_dir(),script)
         ps_f_rel = os.path.join("snap",script)
         if os.path.isfile(ps_f):
+            os.system("chmod +x {0}".format(ps_f))
             subprocess.call([ps_f_rel],cwd=self.get_cache_path())
 
-    def has_snap_script(self,script):
-        '''Returns bool of whether or not the project has a script implemented'''
-        ps_f = os.path.join(self.get_snap_dir(),script)
-        return os.path.isfile(ps_f)
-
-    def has_post_snap(self):
-        '''Return True if post_snap is in the project'''
-        return self.has_snap_script("post_snap")
-
-    def get_stages(self):
-        stages = []
-        i = 1
-        lines = self.get_snapfile_lines(str(i))
-        while lines != []:
-            stages.append({"lines":lines,"stage":str(i)})
-            if os.path.isfile(os.path.join(self.get_snap_dir(),"pre_"+str(i))):
-                stages[i-1]["pre"] = "pre_"+str(i)
-            else:
-                stages[i-1]["pre"] = False
-            i += 1
-            lines = self.get_snapfile_lines(str(i))
-
-        #If the project doesn't have anything defined, just snap everything with no scripts
-        if stages == []:
-            return [{"stage":"1","lines":["."],"pre":False}]
-
-        return stages
 

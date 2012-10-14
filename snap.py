@@ -30,24 +30,30 @@ def snap_testing():
 def snap_project(destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
     branch  = project.choose_and_checkout_branch()
-    stages  = project.get_stages()
+    manifest = project.get_manifest()
+    for (command,payload) in manifest:
+        print()
+        if command == "stage":
+            do_stage(project,payload,destinations)
+        elif command == "local-script":
+            do_local_script(project,payload)
+        elif command == "remote-script":
+            do_remote_script(project,payload,destinations)
 
-    for stage in stages:
-        if stage["pre"] != False:
-            print()
-            lib.menu.header("(Stage {0}) pre-snap".format(stage["stage"]))
-            project.snap_script(stage["pre"])
-        for (node_name,node) in destinations.items():
-            print()
-            lib.menu.header("(Stage {0}) snapping to {1}".format(stage["stage"],node_name))
-            for line in stage["lines"]:
-                lib.rsync.rsync(project,node,line)
+def do_stage(project,stages,destinations):
+    for (node_name,node) in destinations.items():
+        for stage in stages:
+            lib.menu.header("Snapping {0} to {1}".format(stage,node_name))
+            lib.rsync.rsync(project,node,stage)
 
-    if project.has_post_snap():
-        for (node_name,node) in destinations.items():
-            print()
-            lib.menu.header("Running post snap script on {0}".format(node_name))
-            lib.ssh.ssh_project(node,"chmod +x snap/post_snap && snap/post_snap",project)
+def do_local_script(project,script):
+    lib.menu.header("Running {0} locally".format(script))
+    project.snap_script(script)
+
+def do_remote_script(project,script,destinations):
+    for (node_name,node) in destinations.items():
+        lib.menu.header("Running {0} script on {1}".format(script,node_name))
+        lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
 
 #Run when everything is set up
 main()

@@ -14,5 +14,9 @@
     {
         "name":"nemo",
         "url":"git@github.com:crypticcandy/nemo.git"
+    },
+    {
+        "name":"test",
+        "url":"git@github.com:mediocregopher/test.git"
     }
 ]
