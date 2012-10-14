@@ -50,6 +50,13 @@ def navigate(title,menu,depth=-1):
     else:
         return choice_val
 
-def header(title):
+def header(title,color=lib.term.GREEN):
     eq = "="*(len(title)+4)
-    lib.term.print_c("{0}\n= {1} =\n{0}\n".format(eq,title),lib.term.GREEN)
+    lib.term.print_c("{0}\n= {1} =\n{0}\n".format(eq,title),color)
+
+def project_check(project):
+    header("Are you sure you want to snap {0}?".format(project.name),color=lib.term.RED)
+    lib.term.print_c("Type \"{0}\" if you're sure\n".format(project.name),lib.term.RED)
+    if lib.term.readline() != project.name:
+        lib.term.print_c("\nMistypped, are you sure you chose the right project!\n\n",lib.term.RED)
+        project_check(project)

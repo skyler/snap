@@ -31,6 +31,9 @@ def snap_project(destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
     branch  = project.choose_and_checkout_branch()
     manifest = project.get_manifest()
+
+    lib.menu.project_check(project)
+
     for (command,payload) in manifest:
         print()
         if command == "stage":

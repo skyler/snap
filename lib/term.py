@@ -20,3 +20,6 @@ def print_c(text,colors):
 def clear():
     '''Clears terminal'''
     print(chr(27)+chr(91)+'H'+chr(27)+chr(91)+'J')
+
+def readline():
+    return sys.stdin.readline().rstrip() 
