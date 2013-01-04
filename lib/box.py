@@ -2,8 +2,11 @@ import json
 import sys
 import os
 import pprint
-sys.path.append(os.path.abspath(".."))
-
+sys.path.append(
+    os.path.join(
+        os.path.dirname( os.environ['CCETC_ROOT'] )
+    )
+)
 import ccetc.info
 from lib.project import project
 
