@@ -23,7 +23,7 @@ class project:
     def clone(self):
         '''Clones project into cache, unless it's already there'''
         lib.util.mkdir_p(cache_path())
-        if not os.path.isdir( os.path.join( self.get_cache_path(), '.git' ) ):
+        if not os.path.isdir( os.path.join( self.get_cache_dir(), '.git' ) ):
             lib.term.print_c("Cloning...\n",lib.term.BLUE)
             subprocess.call(["git","clone",self.url],cwd=cache_path(),env=git_env)
 
@@ -34,15 +34,15 @@ class project:
             lib.term.print_c("Fetching....\n",lib.term.BLUE)
             self.fetched = True
             subprocess.call(["git","fetch","-v","--all"],
-                            cwd=self.get_cache_path(),
+                            cwd=self.get_cache_dir(),
                             env=git_env)
 
     def branches(self):
         '''Lists all current remote braches'''
         self.fetch()
-        subprocess.call(["git","remote","prune","origin"],cwd=self.get_cache_path())
+        subprocess.call(["git","remote","prune","origin"],cwd=self.get_cache_dir())
         out = str(subprocess.check_output(["git","branch","-r"],
-                                          cwd=self.get_cache_path(),
+                                          cwd=self.get_cache_dir(),
                                           env=git_env),'utf8')
         branches = []
         for branch in out.split("\n"):
@@ -55,7 +55,7 @@ class project:
     def checkout(self,branch):
         '''Checks out the given branch in the local cache repo, does a hard reset'''
         self.fetch()
-        cwd = self.get_cache_path()
+        cwd = self.get_cache_dir()
         lib.term.print_c("Checking out....\n",lib.term.BLUE)
         with open(os.devnull) as null:
             subprocess.call(["git","branch","-f",branch],stdout=null,stderr=null,cwd=cwd)
@@ -63,13 +63,13 @@ class project:
             subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
             subprocess.call(["git","clean","-f","-d"],cwd=cwd)
 
-    def get_cache_path(self):
+    def get_cache_dir(self):
         '''Return relative path to project's repo cache'''
         return os.path.join(cache_path(),self.name)
 
     def get_snap_dir(self):
         '''Returns full path to project's snap directory'''
-        return os.path.join(self.get_cache_path(),"snap")
+        return os.path.join(self.get_cache_dir(),"snap")
         
     def choose_and_checkout_branch(self):
         '''Gives user list of branches to choose from, and checks out the chosen one'''
@@ -130,10 +130,12 @@ class project:
 
     def snap_script(self,script):
         '''Runs a script in the snap directory'''
-        ps_f = os.path.join(self.get_snap_dir(),script)
-        ps_f_rel = os.path.join("snap",script)
-        if os.path.isfile(ps_f):
-            os.system("chmod +x {0}".format(ps_f))
-            subprocess.call([ps_f_rel],cwd=self.get_cache_path())
+        cache_path = self.get_cache_dir()
+        snap_path  = self.get_snap_dir()
+        fn_abs = os.path.join( snap_path, script )
+        fn_rel = os.path.join( "snap",    script )
+        if os.path.isfile(fn_abs):
+            os.system("chmod +x {0}".format(fn_abs))
+            subprocess.call([fn_rel],cwd=cache_path)
 
 

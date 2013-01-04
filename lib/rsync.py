@@ -14,7 +14,7 @@ def rsync(project,node,files='.'):
 
     command = "rsync -av --delete {3}{4}-e'/usr/bin/ssh -i {0} -p22' --rsync-path='mkdir -p {5} && rsync' {1} ccsnap@{2}:{5}".format(
         os.path.join(os.getcwd(),"snap_key"),
-        os.path.join(project.get_cache_path(),files),
+        os.path.join(project.get_cache_dir(),files),
         node["externalips"][0],
         excludes,
         includes,
