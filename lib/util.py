@@ -1,5 +1,6 @@
 import os
 import errno
+import subprocess
 
 def mkdir_p(path):
     try:
@@ -12,3 +13,15 @@ def mkdir_p(path):
 def dict_sorted(d):
     '''Returns dict sorted by key as a list of tuples'''
     return sorted(d.items(), key=lambda x: x[0])
+
+def command_check_stderr(command,cwd="."):
+    proc = subprocess.Popen(command, cwd=cwd,
+                            stdout=None, # print to terminal
+                            stderr=subprocess.PIPE)
+    dup  = subprocess.Popen(["tee","/dev/stderr"], stdin=proc.stderr,
+                            stdout=subprocess.PIPE, # catch errors from first
+                            stderr=None) # also print them to terminal
+    errors = str(dup.stdout.read(),'utf8')
+    
+    if errors:
+        raise Exception("There were errors running {0}:\n{1}".format(command,errors))

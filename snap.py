@@ -77,7 +77,11 @@ def do_local_script(project,script):
 def do_remote_script(project,script,destinations):
     for node in destinations:
         lib.menu.header("Running {0} script on {1}".format(script,node["name"]))
-        lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
+        try:
+            lib.ssh.ssh_project(node,project,"chmod +x snap/{0} && snap/{0}".format(script))
+        except Exception as e:
+            lib.term.big_error(str(e))
+            return False
     return True
 
 #Run when everything is set up

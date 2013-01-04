@@ -1,18 +1,17 @@
 import os
 import config
+from lib.util import command_check_stderr
 
 def ssh(node,command,cwd="/tmp"):
     '''ssh's into a node and runs command, cd-ing into cwd first'''
-    command = "ssh -p22 -i {0} ccsnap@{1} 'cd {2} && {3}'".format(
-                os.path.join(os.getcwd(),"snap_key"),
-                node["externalips"][0],
-                cwd,
-                command
-              )
-    print(command)
-    os.system(command)
 
-def ssh_project(node,command,project):
+    ssh_command = "cd {0} && {1}".format(cwd,command)
+    command = ["ssh","-p22","-i","snap_key","ccsnap@{0}".format(node["externalips"][0]),ssh_command]
+    print(str.join(" ",command[:-1])+" '{0}'".format(ssh_command))
+
+    command_check_stderr(command)
+
+def ssh_project(node,project,command):
     '''Same as ssh, but cwds into a project's directory first'''
     ssh(node,command,cwd=
         os.path.join(config.snap_prefix,"opt/cc",project.name))
