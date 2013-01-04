@@ -16,6 +16,13 @@ def print_c(text,colors):
     Example: print_c("hello world",RED+BOLD)
     '''
     sys.stdout.write(colors+text+RESET)
+    sys.stdout.flush()
+
+def error(text):
+    print_c(text,RED)
+
+def big_error(text):
+    print_c(text,RED+BOLD)
 
 def clear():
     '''Clears terminal'''
@@ -23,3 +30,14 @@ def clear():
 
 def readline():
     return sys.stdin.readline().rstrip() 
+
+def choice(text,default=False,colors=""):
+    if default: yn = "[y]/n"
+    else: yn = "y/[n]"
+
+    print_c("{0} {1} ".format(text,yn),colors)
+
+    answer = readline()
+    if   answer.lower() == "y": return True
+    elif answer.lower() == "n": return False
+    else:                       return default

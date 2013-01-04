@@ -136,6 +136,14 @@ class project:
         fn_rel = os.path.join( "snap",    script )
         if os.path.isfile(fn_abs):
             os.system("chmod +x {0}".format(fn_abs))
-            subprocess.call([fn_rel],cwd=cache_path)
 
+            proc = subprocess.Popen([fn_rel], cwd=cache_path,
+                                    stdout=None, # print to terminal
+                                    stderr=subprocess.PIPE)
+            dup  = subprocess.Popen(["tee","/dev/stderr"], stdin=proc.stderr,
+                                    stdout=subprocess.PIPE, # catch errors from first
+                                    stderr=None) # also print them to terminal
+            errors = str(dup.stdout.read(),'utf8')
 
+            if errors:
+                raise Exception("There were errors running {0}:\n{1}".format(script,errors))

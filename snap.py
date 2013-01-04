@@ -48,26 +48,37 @@ def snap_project(destinations):
     for (command,payload) in manifest:
         print()
         if command == "stage":
-            do_stage(project,payload,destinations)
+            command_ret = do_stage(project,payload,destinations)
         elif command == "local-script":
-            do_local_script(project,payload)
+            command_ret = do_local_script(project,payload)
         elif command == "remote-script":
-            do_remote_script(project,payload,destinations)
+            command_ret = do_remote_script(project,payload,destinations)
+
+        if not command_ret and not lib.term.choice("Do you want to continue with the snap?",False):
+            return
+
 
 def do_stage(project,stages,destinations):
     for node in destinations:
         for stage in stages:
             lib.menu.header("Snapping {0} to {1}".format(stage,node["name"]))
             lib.rsync.rsync(project,node,stage)
+    return True
 
 def do_local_script(project,script):
     lib.menu.header("Running {0} locally".format(script))
-    return project.snap_script(script)
+    try:
+        project.snap_script(script)
+    except Exception as e:
+        lib.term.big_error(str(e))
+        return False
+    return True
 
 def do_remote_script(project,script,destinations):
     for node in destinations:
         lib.menu.header("Running {0} script on {1}".format(script,node["name"]))
-        return lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
+        lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
+    return True
 
 #Run when everything is set up
 main()
