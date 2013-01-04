@@ -40,9 +40,9 @@ def navigate(title,menu,depth=-1,clear_before=True):
             choice_val = menu[choice]
     except:
         #If they chose something invalid we'll end up here. Tell them to try again
-        print_c("Invalid menu choice, try again (hit enter)\n\n",lib.term.RED)
+        lib.term.print_c("Invalid menu choice, try again (hit enter)\n\n",lib.term.RED)
         sys.stdin.readline()
-        return navigate(title,menu)
+        return navigate(title,menu,depth=depth)
 
     #If the choice is a dict, do it all again!
     if isinstance(choice_val,dict) and depth != 0:

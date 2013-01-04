@@ -31,11 +31,11 @@ def snap_group():
 
 def snap_node():
     node = lib.menu.navigate("Choose node to snap to",lib.box.nodes,depth=0)
-    snap_project({node["name"]:node})
+    snap_project([node])
 
 def snap_testing():
     node = lib.box.getNode("testy")
-    snap_project({"testy":node})
+    snap_project([node])
 
 def snap_project(destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
@@ -55,9 +55,9 @@ def snap_project(destinations):
             do_remote_script(project,payload,destinations)
 
 def do_stage(project,stages,destinations):
-    for (node_name,node) in destinations.items():
+    for node in destinations:
         for stage in stages:
-            lib.menu.header("Snapping {0} to {1}".format(stage,node_name))
+            lib.menu.header("Snapping {0} to {1}".format(stage,node["name"]))
             lib.rsync.rsync(project,node,stage)
 
 def do_local_script(project,script):
@@ -65,8 +65,8 @@ def do_local_script(project,script):
     return project.snap_script(script)
 
 def do_remote_script(project,script,destinations):
-    for (node_name,node) in destinations.items():
-        lib.menu.header("Running {0} script on {1}".format(script,node_name))
+    for node in destinations:
+        lib.menu.header("Running {0} script on {1}".format(script,node["name"]))
         return lib.ssh.ssh_project(node,"chmod +x snap/{0} && snap/{0}".format(script),project)
 
 #Run when everything is set up
