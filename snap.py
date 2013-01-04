@@ -62,7 +62,11 @@ def do_stage(project,stages,destinations):
     for node in destinations:
         for stage in stages:
             lib.menu.header("Snapping {0} to {1}".format(stage,node["name"]))
-            lib.rsync.rsync(project,node,stage)
+            try:
+                lib.rsync.rsync(project,node,stage)
+            except Exception as e:
+                lib.term.big_error(str(e))
+                return False
     return True
 
 def do_local_script(project,script):

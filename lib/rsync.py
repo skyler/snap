@@ -1,28 +1,32 @@
 import config
 import os
 import subprocess
+from lib.util import command_check_stderr
 
 def rsync(project,node,files='.'):
 
-    excludes = ""
+    excludes = []
     for e in get_default_excludes()+project.get_excludes():
-        excludes += "--exclude={0} ".format(e)
+        excludes.append("--exclude={0}".format(e))
 
-    includes = ""
+    includes = []
     for i in project.get_includes():
-        includes += "--include={0} ".format(i)
+        includes.append("--include={0}".format(i))
 
-    command = "rsync -av --delete {3}{4}-e'/usr/bin/ssh -i {0} -p22' --rsync-path='mkdir -p {5} && rsync' {1} ccsnap@{2}:{5}".format(
-        os.path.join(os.getcwd(),"snap_key"),
-        os.path.join(project.get_cache_dir(),files),
-        node["externalips"][0],
-        excludes,
-        includes,
-        os.path.join(config.snap_prefix,"opt/cc",project.name)
-    )
+    local_project_files  = os.path.join(project.get_cache_dir(),files)
+    remote_project_path  = os.path.join(config.snap_prefix,"opt/cc",project.name)
+
+    command  = ["rsync", "-av", "--delete"]
+    command += excludes
+    command += includes
+    command += ["-e",'/usr/bin/ssh -i {0} -p22'.format(os.path.join(os.getcwd(),"snap_key"))]
+    command += ["--rsync-path=mkdir -p {0} && rsync".format(remote_project_path)]
+    command += [local_project_files]
+    command += ["ccsnap@{0}:{1}".format(node["externalips"][0],remote_project_path)]
 
     print(command)
-    os.system(command)
+
+    command_check_stderr(command)
     
 
 def get_default_excludes():
