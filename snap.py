@@ -47,16 +47,31 @@ def snap_project(destinations):
 
     for (command,payload) in manifest:
         print()
-        if command == "stage":
-            command_ret = do_stage(project,payload,destinations)
-        elif command == "local-script":
-            command_ret = do_local_script(project,payload)
-        elif command == "remote-script":
-            command_ret = do_remote_script(project,payload,destinations)
+        command_ret = process_command(project,destinations,command,payload)
 
         if not command_ret and not lib.term.choice("Do you want to continue with the snap?",False):
             return
 
+def process_command(project,destinations,command,payload):
+    if command == "stage":
+        return do_stage(project,payload,destinations)
+
+    elif command == "local-script":
+        return do_local_script(project,payload)
+
+    elif command == "remote-script":
+        return do_remote_script(project,payload,destinations)
+
+    elif command == "choice":
+        title,choices = payload
+        newcommand,newpayload = lib.menu.navigate(title,choices,clear_before=False)
+        print()
+        return process_command(project,destinations,newcommand,newpayload)
+
+    elif command == "pass":
+        return True
+
+    return True
 
 def do_stage(project,stages,destinations):
     for node in destinations:

@@ -1,9 +1,9 @@
 import lib.util
 import lib.menu
 import lib.term
+import lib.manifest
 import os
 import subprocess
-import re
 
 git_env = os.environ.copy()
 git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
@@ -101,32 +101,9 @@ class project:
         return self.get_snapfile_lines("includes")
 
     def get_manifest(self):
-        '''Returns the lines of the manifest as a list of tuples. Possible tuples:
-
-        ("stage",["filedir1","filedir2","...")
-        ("local-script","script_name")
-        ("remote-script","script_name")
-
-        If there is no manifest file, pretends it had only the line "stage ."
-        '''
         lines = self.get_snapfile_lines("manifest")
-        manifest = []
-        for line in lines:
-            sline = re.findall('[^ ]+',line)
-            command = sline[0]
-            if command == "stage":
-                stages = list(map(lambda x: x.strip(), sline[1:]))
-                manifest.append(( "stage",stages))
-            elif command == "local-script":
-                ls = sline[1].strip()
-                manifest.append(("local-script",ls))
-            elif command == "remote-script":
-                rs = sline[1].strip()
-                manifest.append(("remote-script",rs)) 
-
-        if manifest == []:
-            manifest = [("stage",["."])]
-        return manifest
+        if lines == []: lines = ["stage ."]
+        return lib.manifest.parse_manifest(lines)
 
     def snap_script(self,script):
         '''Runs a script in the snap directory'''
