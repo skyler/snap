@@ -14,7 +14,7 @@ def main():
            }
 
     lib.menu.navigate("Choose action",menu)()
-    
+
     done_menu = {
                     "Return to main menu": "r",
                     "Exit":                "e"
