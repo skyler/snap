@@ -4,8 +4,19 @@ testmode_prefix="/tmp/snap_test"
 from lib.project import project
 projects = [
 
-    #project( name     = "projectname",
-    #         url      = "git@example.com:foo/bar.git",
-    #         location = "/projects/directory" )
+    #project(
+    #           name        = "projectname",
+    #           url         = "git@example.com:foo/bar.git",
+    #           location    = "/projects/directory",
+    #
+    #           #Defaults to the current user
+    #           remote_user = "some_user",
+    #
+    #           #Defaults to current users's key, path can be absolute or
+    #           #relative with respect to this file
+    #           remote_user_key  = "key/location"
+    #       ),
+    #
+    #project(...)
 
 ]

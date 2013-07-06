@@ -1,9 +1,11 @@
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 import lib.menu
 import lib.term
 import lib.box
 import lib.rsync
 import lib.ssh
-import os
 import subprocess
 
 def main():

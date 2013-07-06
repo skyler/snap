@@ -16,11 +16,12 @@ def cache_path():
 
 class project:
 
-    def __init__(self,name,url,location,user=getpass.getuser()):
+    def __init__(self,name,url,location,remote_user=getpass.getuser(),remote_user_key=None):
         self.name     = name
         self.url      = url
         self.location = location
-        self.user     = user
+        self.user     = remote_user
+        self.key      = remote_user_key
         self.fetched  = False
 
     def clone(self):
@@ -50,7 +51,7 @@ class project:
         branches = []
         for branch in out.split("\n"):
             if not "HEAD" in branch:
-                try: 
+                try:
                     branches.append(branch.split("/")[1])
                 except Exception: pass
         return branches
@@ -73,7 +74,7 @@ class project:
     def get_snap_dir(self):
         '''Returns full path to project's snap directory'''
         return os.path.join(self.get_cache_dir(),"snap")
-        
+
     def choose_and_checkout_branch(self):
         '''Gives user list of branches to choose from, and checks out the chosen one'''
         branches = {}

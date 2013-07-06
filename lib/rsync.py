@@ -17,13 +17,17 @@ def rsync(project,node,files='.'):
     remote_project_path  = project.location
     if config.testmode: remote_project_path = config.testmode_prefix+remote_project_path
 
+    key_stmt = ""
+    if project.key:
+        key_stmt = "-i {0}".format(os.path.join(os.getcwd(),project.key))
+
     command  = ["rsync", "-av", "--delete"]
     command += excludes
     command += includes
-    command += ["-e",'/usr/bin/ssh -i {0} -p22'.format(os.path.join(os.getcwd(),"snap_key"))]
+    command += ["-e",'/usr/bin/ssh {0} -p22'.format(key_stmt)]
     command += ["--rsync-path=mkdir -p {0} && rsync".format(remote_project_path)]
     command += [local_project_files]
-    command += ["ccsnap@{0}:{1}".format(node["externalips"][0],remote_project_path)]
+    command += ["{0}@{1}:{2}".format(project.user,node["externalips"][0],remote_project_path)]
 
     print(command)
 
