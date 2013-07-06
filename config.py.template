@@ -1,6 +1,13 @@
 testmode=True
 testmode_prefix="/tmp/snap_test"
 
+#List of default items/globs which rsync should always exclude when snapping
+default_excludes = [
+    ".git",
+    "__pycache__",
+    "*.pyc"
+]
+
 from lib.project import project
 projects = [
 

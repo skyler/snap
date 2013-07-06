@@ -6,7 +6,7 @@ from lib.util import command_check_stderr
 def rsync(project,node,files='.'):
 
     excludes = []
-    for e in get_default_excludes()+project.get_excludes():
+    for e in config.default_excludes+project.get_excludes():
         excludes.append("--exclude={0}".format(e))
 
     includes = []
@@ -32,11 +32,3 @@ def rsync(project,node,files='.'):
     print(command)
 
     command_check_stderr(command)
-
-
-def get_default_excludes():
-    excludes = []
-    with open("res/default_excludes") as f:
-        for line in f:
-            excludes.append(line.rstrip())
-    return excludes
