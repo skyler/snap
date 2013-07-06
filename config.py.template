@@ -1,3 +1,11 @@
 testmode=True
-if testmode: snap_prefix="/tmp/snap_test"
-else: snap_prefix="/"
+testmode_prefix="/tmp/snap_test"
+
+from lib.project import project
+projects = [
+
+    #project( name     = "projectname",
+    #         url      = "git@example.com:foo/bar.git",
+    #         location = "/projects/directory" )
+
+]

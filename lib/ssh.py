@@ -13,5 +13,6 @@ def ssh(node,command,cwd="/tmp"):
 
 def ssh_project(node,project,command):
     '''Same as ssh, but cwds into a project's directory first'''
-    ssh(node,command,cwd=
-        os.path.join(config.snap_prefix,"opt/cc",project.name))
+    project_path = project.location
+    if config.testmode: project_path = config.testmode_prefix+project_path
+    ssh(node,command,cwd=project_path)

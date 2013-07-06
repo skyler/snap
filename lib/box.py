@@ -9,14 +9,12 @@ sys.path.append(
 )
 import ccetc_py.info
 from lib.project import project
+import config
 
 #Init projects
 projects = {}
-with open("res/project_list.json") as f:
-    projects_json = json.loads(f.read())
-for project_json in projects_json:
-    p = project( project_json )
-    projects[project_json["name"]] = p
+for p in config.projects:
+    projects[p.name] = p
 
 #Init nodes and groups
 nodes = ccetc_py.info.nodes()

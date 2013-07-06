@@ -14,7 +14,8 @@ def rsync(project,node,files='.'):
         includes.append("--include={0}".format(i))
 
     local_project_files  = os.path.join(project.get_cache_dir(),files)
-    remote_project_path  = os.path.join(config.snap_prefix,"opt/cc",project.name)
+    remote_project_path  = project.location
+    if config.testmode: remote_project_path = config.testmode_prefix+remote_project_path
 
     command  = ["rsync", "-av", "--delete"]
     command += excludes
@@ -27,7 +28,7 @@ def rsync(project,node,files='.'):
     print(command)
 
     command_check_stderr(command)
-    
+
 
 def get_default_excludes():
     excludes = []

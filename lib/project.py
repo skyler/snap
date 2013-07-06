@@ -4,6 +4,7 @@ import lib.term
 import lib.manifest
 import os
 import subprocess
+import getpass
 
 git_env = os.environ.copy()
 git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
@@ -15,10 +16,12 @@ def cache_path():
 
 class project:
 
-    def __init__(self,json):
-        self.name    = json["name"]
-        self.url     = json["url"]
-        self.fetched = False
+    def __init__(self,name,url,location,user=getpass.getuser()):
+        self.name     = name
+        self.url      = url
+        self.location = location
+        self.user     = user
+        self.fetched  = False
 
     def clone(self):
         '''Clones project into cache, unless it's already there'''
