@@ -78,7 +78,7 @@ def process_command(project,destinations,command,payload):
 def do_stage(project,stages,destinations):
     for node in destinations:
         for stage in stages:
-            lib.menu.header("Snapping {0} to {1}".format(stage,node["name"]))
+            lib.menu.header("Snapping {0} to {1}".format(stage,node.name))
             try:
                 lib.rsync.rsync(project,node,stage)
             except Exception as e:
@@ -97,7 +97,7 @@ def do_local_script(project,script):
 
 def do_remote_script(project,script,destinations):
     for node in destinations:
-        lib.menu.header("Running {0} script on {1}".format(script,node["name"]))
+        lib.menu.header("Running {0} script on {1}".format(script,node.name))
         try:
             lib.ssh.ssh_project(node,project,"chmod +x snap/{0} && snap/{0}".format(script))
         except Exception as e:

@@ -24,10 +24,10 @@ def rsync(project,node,files='.'):
     command  = ["rsync", "-av", "--delete"]
     command += excludes
     command += includes
-    command += ["-e",'/usr/bin/ssh {0} -p22'.format(key_stmt)]
+    command += ["-e",'/usr/bin/ssh {0} -p{1}'.format(key_stmt,str(node.ssh_port))]
     command += ["--rsync-path=mkdir -p {0} && rsync".format(remote_project_path)]
     command += [local_project_files]
-    command += ["{0}@{1}:{2}".format(project.user,node["externalips"][0],remote_project_path)]
+    command += ["{0}@{1}:{2}".format(project.user,node.ip,remote_project_path)]
 
     print(command)
 

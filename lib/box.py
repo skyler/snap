@@ -1,14 +1,6 @@
 import json
 import sys
 import os
-import pprint
-sys.path.append(
-    os.path.join(
-        os.environ['CCETC_ROOT']
-    )
-)
-import ccetc_py.info
-from lib.project import project
 import config
 
 #Init projects
@@ -17,8 +9,13 @@ for p in config.projects:
     projects[p.name] = p
 
 #Init nodes and groups
-nodes = ccetc_py.info.nodes()
-groups = ccetc_py.info.groups()
+nodes = {}
+groups = {}
+for n in config.nodes:
+    nodes[n.name] = n
+    for g in n.groups:
+        if not g in groups: groups[g] = []
+        groups[g].append(n)
 
 def getProject(project):
     '''If it exists, returns project. Else, returns None'''

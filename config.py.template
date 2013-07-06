@@ -20,3 +20,17 @@ projects = [
     #project(...)
 
 ]
+
+from lib.node import node
+nodes = [
+
+    #node(
+    #           name        = "nodename",
+    #           ip          = "ip/hostname",
+    #           ssh_port    = 22, #Defaults to 22
+    #           groups      = [ "list", "of", "groups" ] #Defaults to []
+    #    ),
+    #
+    #node(...)
+
+]

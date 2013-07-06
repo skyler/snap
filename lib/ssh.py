@@ -7,9 +7,9 @@ def ssh(node,command,cwd="/tmp",user=getpass.getuser(),key=None):
     '''ssh's into a node and runs command, cd-ing into cwd first'''
 
     ssh_command = "cd {0} && {1}".format(cwd,command)
-    command =  ["ssh","-t","-q","-p22"]
+    command =  ["ssh","-t","-q","-p",str(node.ssh_port)]
     if key: command += [ "-i",key]
-    command += ["{0}@{1}".format(user,node["externalips"][0]),ssh_command]
+    command += ["{0}@{1}".format(user,node.ip),ssh_command]
     print(str.join(" ",command[:-1])+" '{0}'".format(ssh_command))
 
     command_check_stderr(command)
