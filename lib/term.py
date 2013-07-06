@@ -29,7 +29,7 @@ def clear():
     print(chr(27)+chr(91)+'H'+chr(27)+chr(91)+'J')
 
 def readline():
-    return sys.stdin.readline().rstrip() 
+    return sys.stdin.readline().rstrip()
 
 def choice(text,default=False,colors=""):
     if default: yn = "[y]/n"

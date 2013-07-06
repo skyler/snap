@@ -5,7 +5,7 @@ import itertools
 def combine_lines(lines,line):
     if lines and lines[-1] and lines[-1][-1] == '\\':
         lines[-1] = lines[-1][:-1] + line
-    else: 
+    else:
         lines.append(line)
     return lines
 
@@ -47,7 +47,7 @@ def parse_manifest(lines):
     for line in lines:
         sline = split_line(line)
         if sline:
-            parsed = parse_items(sline) 
+            parsed = parse_items(sline)
             manifest.append(parsed)
 
     return manifest

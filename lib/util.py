@@ -22,6 +22,6 @@ def command_check_stderr(command,cwd="."):
                             stdout=subprocess.PIPE, # catch errors from first
                             stderr=None) # also print them to terminal
     errors = str(dup.stdout.read(),'utf8')
-    
+
     if errors:
         raise Exception("There were errors running {0}:\n{1}".format(command,errors))
