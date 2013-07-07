@@ -30,4 +30,4 @@ def getNode(node):
 def getGroup(group):
     '''If it exists, returns group dict. Else, returns empty dict'''
     if group in groups: return groups[group]
-    else: return {}
+    else: return []

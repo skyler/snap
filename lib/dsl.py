@@ -2,6 +2,7 @@ import config
 import lib.rsync
 import lib.menu
 import lib.ssh
+import lib.box
 
 def default_run(self):
     self.stage('.')
@@ -12,13 +13,15 @@ class dsl:
         self.project = project
         self.destinations = destinations
 
-    def stage(self,stage,includes=None,excludes=None):
+    def stage(self,stage,includes=None,excludes=None,destinations=None):
         if includes is None: includes = []
         if excludes is None: excludes = []
+        if destinations is None: destinations = self.destinations
+
         for e in config.default_excludes:
             excludes.append(e)
 
-        for node in self.destinations:
+        for node in destinations:
             lib.menu.header("Snapping {0} to {1}".format(stage,node.name))
             try:
                 lib.rsync.rsync(self.project,node,stage,includes,excludes)
@@ -37,8 +40,9 @@ class dsl:
         return True
 
     #TODO make sure this is already sync'd
-    def remote_script(self,script):
-        for node in self.destinations:
+    def remote_script(self,script,destinations=None):
+        if destinations is None: destinations = self.destinations
+        for node in destinations:
             lib.menu.header("Running {0} script on {1}".format(script,node.name))
             try:
                 lib.ssh.ssh_project(node,self.project,"chmod +x snap/{0} && snap/{0}".format(script))
@@ -52,3 +56,12 @@ class dsl:
 
     def choice(self,title,menu):
         return lib.menu.navigate(title,menu,clear_before=False)
+
+    def get_nodes(self,nodes):
+        ret = []
+        for n in nodes:
+            ret.append(lib.box.getNode(n))
+        return ret
+
+    def get_nodes_in_group(self,group):
+        return lib.box.getGroup(group)
