@@ -3,15 +3,17 @@ import os
 import subprocess
 from lib.util import command_check_stderr
 
-def rsync(project,node,files='.'):
+def rsync(project,node,files='.',includes=None,excludes=None):
+    if includes is None: includes = []
+    if excludes is None: excludes = []
 
-    excludes = []
-    for e in config.default_excludes+project.get_excludes():
-        excludes.append("--exclude={0}".format(e))
+    excludes_opts = []
+    for e in excludes:
+        excludes_opts.append("--exclude={0}".format(e))
 
-    includes = []
-    for i in project.get_includes():
-        includes.append("--include={0}".format(i))
+    includes_opts = []
+    for i in includes:
+        includes_opts.append("--include={0}".format(i))
 
     local_project_files  = os.path.join(project.get_cache_dir(),files)
     remote_project_path  = project.location
@@ -22,8 +24,8 @@ def rsync(project,node,files='.'):
         key_stmt = "-i {0}".format(os.path.join(os.getcwd(),project.key))
 
     command  = ["rsync", "-av", "--delete"]
-    command += excludes
-    command += includes
+    command += excludes_opts
+    command += includes_opts
     command += ["-e",'/usr/bin/ssh {0} -p{1}'.format(key_stmt,str(node.ssh_port))]
     command += ["--rsync-path=mkdir -p {0} && rsync".format(remote_project_path)]
     command += [local_project_files]

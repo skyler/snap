@@ -1,7 +1,6 @@
 import lib.util
 import lib.menu
 import lib.term
-import lib.manifest
 import os
 import subprocess
 import getpass
@@ -83,31 +82,6 @@ class project:
         branch = lib.menu.navigate("Choose a branch from {0}".format(self.name),branches)
         self.checkout(branch)
         return branch
-
-    def get_snapfile_lines(self,fn):
-        '''Returns lines from a file in the project's snap directory as a list,
-        or empty list on error'''
-        lines = []
-        try:
-            with open(os.path.join(self.get_snap_dir(),fn)) as f:
-                for l in f:
-                    lines.append(l.rstrip())
-            return lines
-        except Exception:
-            return []
-
-    def get_excludes(self):
-        '''Returns project's excludes'''
-        return self.get_snapfile_lines("excludes")
-
-    def get_includes(self):
-        '''Returns project's includes'''
-        return self.get_snapfile_lines("includes")
-
-    def get_manifest(self):
-        lines = self.get_snapfile_lines("manifest")
-        if lines == []: lines = ["stage ."]
-        return lib.manifest.parse_manifest(lines)
 
     def snap_script(self,script):
         '''Runs a script in the snap directory'''

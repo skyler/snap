@@ -15,21 +15,20 @@ def navigate(title,menu,depth=-1,clear_before=True):
 
     #Sort the menu by key (returns iterable of tuples (key,value))
     menu_sorted = lib.util.dict_sorted(menu)
-    
+
     #Do the actual printing
     if clear_before: lib.term.clear()
-    else: print()
     header(title)
-    print()
     for (k,v) in menu_sorted:
         print("{0}) {1}".format(i,k))
         menu_numeric.append((k,v))
         i+=1
     lib.term.print_c("\nChoose an option (by number or name): ",lib.term.GREEN)
-    
+
     #Read and strip the input
     choice = sys.stdin.readline().rstrip()
-    
+    print()
+
     try:
         try:
             #If choice is an integer return from the list
@@ -53,7 +52,7 @@ def navigate(title,menu,depth=-1,clear_before=True):
 
 def header(title,color=lib.term.GREEN):
     eq = "="*(len(title)+4)
-    lib.term.print_c("{0}\n= {1} =\n{0}\n".format(eq,title),color)
+    lib.term.print_c("\n{0}\n= {1} =\n{0}\n\n".format(eq,title),color)
 
 def project_check(project):
     header("Are you sure you want to snap {0}?".format(project.name),color=lib.term.RED)
