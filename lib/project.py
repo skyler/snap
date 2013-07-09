@@ -67,6 +67,12 @@ class project:
             subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
             subprocess.call(["git","clean","-f","-d"],cwd=cwd)
 
+    def tag(self,tagname):
+        '''Tags whatever commit the project is on and attempts to push that to the remote repo'''
+        cwd = self.get_cache_dir()
+        subprocess.call(["git","tag",tagname],cwd=cwd)
+        subprocess.call(["git","push","--tags"],cwd=cwd)
+
     def get_cache_dir(self):
         '''Return relative path to project's repo cache'''
         return os.path.join(cache_path(),self.name)

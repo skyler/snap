@@ -64,5 +64,9 @@ def snap_project(destinations):
     else:
         lib.dsl.default_run(pdsl)
 
+    if not pdsl.tagmsg is None:
+        lib.menu.header("Tagging project")
+        project.tag(pdsl.tagmsg)
+
 #Run when everything is set up
 main()

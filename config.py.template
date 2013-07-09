@@ -41,3 +41,21 @@ nodes = [
     #node(...)
 
 ]
+
+#If you want all snaps to tag the commit snapped in git and push that to the remote
+#repository then have this function return the string you want them tagged with.
+#By default the function returns a simple time-based string. The function takes
+#in the project object for the snap in question, so you can use that for a more
+#complex situation. Functions/attributes for the project class to know about:
+#
+# * project.get_cache_dir() - returns the absolute path to the local copy of the
+#                             project.
+# * project.get_snap_dir()  - returns the absolute path to the snap directory of the
+#                             local copy of the project.
+# * project.name            - the name of the project as defined in config.py
+#
+#(Note that this function will be run BEFORE the snap is actually started)
+#If you don't want the project to be snapped by default, have this return None
+def default_tag(project):
+    import time
+    return time.strftime("snap_%Y-%m-%d_%H-%M-%S")

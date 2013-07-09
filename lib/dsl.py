@@ -12,6 +12,7 @@ class dsl:
     def __init__(self,project,destinations):
         self.project = project
         self.destinations = destinations
+        self.tagmsg = config.default_tag(project)
 
     def stage(self,stage,includes=None,excludes=None,destinations=None):
         if includes is None: includes = []
@@ -65,3 +66,6 @@ class dsl:
 
     def get_nodes_in_group(self,group):
         return lib.box.getGroup(group)
+
+    def tag(self,msg):
+        self.tagmsg = msg
