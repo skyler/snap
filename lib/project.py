@@ -4,6 +4,7 @@ import lib.term
 import os
 import subprocess
 import getpass
+import fnmatch
 
 git_env = os.environ.copy()
 git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
@@ -92,3 +93,16 @@ class project:
         if os.path.isfile(fn_abs):
             os.system("chmod +x {0}".format(fn_abs))
             lib.util.command_check_stderr([fn_rel], cwd=cache_path)
+
+    def get_nosnap(self):
+        '''Returns a nosnap message that exists in the root of the project, or None'''
+        cache_path = self.get_cache_dir()
+        root_contents = os.listdir(cache_path)
+        for f in fnmatch.filter(root_contents,'*.nosnap'):
+            fullf = os.path.join(cache_path,f)
+            if os.path.isfile(fullf):
+                s = ""
+                with open(fullf,'r') as fh:
+                    for l in fh: s += l
+                return s
+        return None

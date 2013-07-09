@@ -43,6 +43,16 @@ def snap_project(destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
     project.choose_and_checkout_branch()
 
+    nosnap = project.get_nosnap()
+    if not nosnap is None:
+        print()
+        lib.term.print_c(
+            "Project has a nosnap file in its root.\nThe contents are:\n",
+            lib.term.RED
+        )
+        print(nosnap)
+        return
+
     lib.menu.project_check(project)
 
     snap_dir = project.get_snap_dir()
