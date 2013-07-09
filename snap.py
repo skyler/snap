@@ -34,14 +34,15 @@ def main():
         pass
 
 def snap_group():
-    group = lib.menu.navigate("Choose group to snap to",lib.box.groups,depth=0)
-    snap_project(group)
+    groupname,group = lib.menu.navigate("Choose group to snap to",lib.box.groups, depth=0,
+                                                                                  selection_also=True)
+    snap_project(groupname,group)
 
 def snap_node():
     node = lib.menu.navigate("Choose node to snap to",lib.box.nodes,depth=0)
-    snap_project([node])
+    snap_project(node.name,[node])
 
-def snap_project(destinations):
+def snap_project(destname,destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
     project.choose_and_checkout_branch()
 
@@ -75,7 +76,7 @@ def snap_project(destinations):
         lib.wentlive.send( project,
                            pdsl.wentlive_src,
                            pdsl.wentlive_dest,
-                           'front_end_nodes',
+                           destname,
                            config.smtpserver,
                            config.smtplogin,
                            config.smtpssl )
