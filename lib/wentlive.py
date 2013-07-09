@@ -30,7 +30,11 @@ Commit Message:
     msg = email.mime.text.MIMEText(wentlive)
     msg['Subject'] = wentlive_subject
     msg['From'] = src
-    msg['To'] = dest
+
+    if type(dest) is list:
+        msg['To'] = ", ".join(dest)
+    else:
+        msg['To'] = dest
 
     server = None
     if ssl: server = smtplib.SMTP_SSL(smtpserver)
