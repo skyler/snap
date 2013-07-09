@@ -1,12 +1,14 @@
 import os
 import sys
+import subprocess
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import lib.menu
 import lib.term
 import lib.box
 import lib.dsl
-import subprocess
+import lib.wentlive
+import config
 
 __ORIGINAL_PATH__ = list(sys.path)
 
@@ -67,6 +69,16 @@ def snap_project(destinations):
     if not pdsl.tagmsg is None:
         lib.menu.header("Tagging project")
         project.tag(pdsl.tagmsg)
+
+    if pdsl.send_wentlive:
+        lib.menu.header("Sending a Wentlive email")
+        lib.wentlive.send( project,
+                           pdsl.wentlive_src,
+                           pdsl.wentlive_dest,
+                           'front_end_nodes',
+                           config.smtpserver,
+                           config.smtplogin,
+                           config.smtpssl )
 
 #Run when everything is set up
 main()

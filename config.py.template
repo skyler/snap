@@ -59,3 +59,23 @@ nodes = [
 def default_tag(project):
     import time
     return time.strftime("snap_%Y-%m-%d_%H-%M-%S")
+
+#Whether or not to always send a wentlive
+wentlive_always = False
+
+#Where the wentlive should appear to come from
+wentlive_source = 'foo@gmail.com'
+
+#Where the wentlive should go (TODO make this be able to be a list)
+wentlive_destination = 'bar@gmail.com'
+
+#The smtpserver to use (in the form of "host:port" if port needs to be specified)
+#smtpserver = 'smtp.gmail.com'
+smtpserver = 'localhost'
+
+#Login for the smtp server if needed (in the form of "username:password") or None if not needed
+#smtplocing = "username:password"
+smtplogin = None
+
+#Whether or not to use SSL for smtp
+smtpssl = False

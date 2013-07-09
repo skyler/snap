@@ -13,6 +13,9 @@ class dsl:
         self.project = project
         self.destinations = destinations
         self.tagmsg = config.default_tag(project)
+        self.send_wentlive = config.wentlive_always
+        self.wentlive_src = config.wentlive_source
+        self.wentlive_dest = config.wentlive_destination
 
     def stage(self,stage,includes=None,excludes=None,destinations=None):
         if includes is None: includes = []
@@ -69,3 +72,8 @@ class dsl:
 
     def tag(self,msg):
         self.tagmsg = msg
+
+    def wentlive(self,src=config.wentlive_source,dest=config.wentlive_destination):
+        self.send_wentlive = True
+        self.wentlive_src = src
+        self.wentlive_dest = dest

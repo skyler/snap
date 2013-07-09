@@ -56,6 +56,24 @@ class project:
                 except Exception: pass
         return branches
 
+    def current_branch(self):
+        '''Returns the name of the current branch'''
+        cwd = self.get_cache_dir()
+        branch = str(subprocess.check_output(["git","rev-parse","--abbrev-ref","HEAD"],cwd=cwd),'utf8')
+        return branch.rstrip()
+
+    def current_commit(self):
+        '''Returns the name of the current commit'''
+        cwd = self.get_cache_dir()
+        branch = str(subprocess.check_output(["git","rev-parse","HEAD"],cwd=cwd),'utf8')
+        return branch.rstrip()
+
+    def current_commit_message(self):
+        '''Returns the current commit message'''
+        cwd = self.get_cache_dir()
+        branch = str(subprocess.check_output(["git","log","-1","--pretty=%B"],cwd=cwd),'utf8')
+        return branch.rstrip()
+
     def checkout(self,branch):
         '''Checks out the given branch in the local cache repo, does a hard reset'''
         self.fetch()
