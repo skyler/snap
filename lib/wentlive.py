@@ -27,6 +27,12 @@ Commit Message:
 
     wentlive_subject = "WENTLIVE: {0} to {1}".format(project.name,snap_dest)
 
+    if config.testmode:
+        print("Wentlive would send email:\n{0}\n{1}\n\nto {2}".format(wentlive_subject,
+                                                                      wentlive,
+                                                                      dest))
+        return
+
     msg = email.mime.text.MIMEText(wentlive)
     msg['Subject'] = wentlive_subject
     msg['From'] = src
