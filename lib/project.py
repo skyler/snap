@@ -37,7 +37,7 @@ class project:
         if not self.fetched:
             lib.term.print_c("Fetching....\n",lib.term.BLUE)
             self.fetched = True
-            subprocess.call(["git","fetch","-v","--all"],
+            subprocess.call(["git","fetch","-pv","--all"],
                             cwd=self.get_cache_dir(),
                             env=git_env)
 
@@ -55,6 +55,14 @@ class project:
                     branches.append(branch.split("/")[1])
                 except Exception: pass
         return branches
+
+    def tags(self):
+        '''List all current tags for the project'''
+        subprocess.call(["git","fetch","-pvt","--all"],
+                        cwd=self.get_cache_dir(),
+                        env=git_env)
+        out = str(subprocess.check_output(["git","tag","-l"],cwd=self.get_cache_dir()),'utf8')
+        return out.split("\n")
 
     def current_branch(self):
         '''Returns the name of the current branch'''
@@ -80,10 +88,9 @@ class project:
         cwd = self.get_cache_dir()
         lib.term.print_c("Checking out....\n",lib.term.BLUE)
         with open(os.devnull) as null:
-            subprocess.call(["git","branch","-f",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
-            subprocess.call(["git","reset","--hard","origin/"+branch],cwd=cwd)
-            subprocess.call(["git","clean","-f","-d"],cwd=cwd)
+            subprocess.call(["git","reset","--hard",branch],cwd=cwd)
+            subprocess.call(["git","clean","-f","-d","-x"],cwd=cwd)
 
     def tag(self,tagname):
         '''Tags whatever commit the project is on and attempts to push that to the remote repo'''
@@ -104,7 +111,24 @@ class project:
         branches = {}
         for b in self.branches():
             branches[b] = b
+        branches["# Choose a tag instead #"] = True
         branch = lib.menu.navigate("Choose a branch from {0}".format(self.name),branches)
+
+        if branch is True:
+            tags = {}
+            for t in self.tags():
+                if t: tags[t] = t
+
+            if not tags:
+                lib.term.big_error("There are no tags associated with this repo\n")
+                lib.term.big_error("Press enter to go back\n")
+                lib.term.readline()
+                return self.choose_and_checkout_branch()
+
+            branch = lib.menu.navigate("Choose a tag from {0}".format(self.name),tags)
+        else:
+            branch = "origin/"+branch
+
         self.checkout(branch)
         return branch
 
