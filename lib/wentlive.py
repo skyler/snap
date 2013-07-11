@@ -1,11 +1,14 @@
 import config
+import lib.term
 import email.mime.text
 import smtplib
 import getpass
 
-#TODO make this take in an optional description
 def send(project,src,dest,snap_dest,smtpserver='localhost',login=None,ssl=False):
     '''Sends out a wentlive email saying that a project has been snapped'''
+
+    lib.term.print_c("Type in a description for a wentlive email.\nAn empty line indicates the end of the description\n",lib.term.BLUE)
+    description = lib.term.blockread()
 
     wentlive = """
 Snapper:     {0}
@@ -13,9 +16,9 @@ Project:     {1}
 Destination: {2}
 Branch:      {3}
 Commit Hash: {4}
-Commit Message:
-{5}
+Commit Message: {5}
 
+{6}
  - Snaps
 
 """.format(
@@ -24,7 +27,8 @@ Commit Message:
     snap_dest,
     project.current_branch(),
     project.current_commit(),
-    project.current_commit_message()
+    project.current_commit_message(),
+    description
 )
 
     wentlive_subject = "WENTLIVE: {0} to {1}".format(project.name,snap_dest)

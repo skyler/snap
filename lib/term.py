@@ -34,6 +34,18 @@ def readline():
     '''Reads a line in from the user and strips out the newline'''
     return sys.stdin.readline().rstrip()
 
+def blockread():
+    '''Reads in multiple lines from the user until the user enters a blank
+    line. Returns the full string of what was input, sans the final newline'''
+    lines = []
+    while True:
+        line = readline()
+        if line:
+            lines.append(line)
+        else:
+            break
+    return "\n".join(lines)+"\n"
+
 def choice(text,default=False,colors=""):
     '''Gives the user a y/n choice'''
     if default: yn = "[y]/n"
