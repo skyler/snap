@@ -43,9 +43,12 @@ def snap_node():
     snap_project(node.name,[node])
 
 def snap_project(destname,destinations):
+    #Choose the project and the branch/tag of it to checkout
     project = lib.menu.navigate("Choose project",lib.box.projects)
     project.choose_and_checkout_branch()
 
+    #TODO document this
+    #If there's a nosnap file we don't actually snap
     nosnap = project.get_nosnap()
     if not nosnap is None:
         print()
@@ -56,10 +59,16 @@ def snap_project(destname,destinations):
         print(nosnap)
         return
 
+    #Make sure the user knows what they're doing (never trust the user)
     lib.menu.project_check(project)
 
-    snap_dir = project.get_snap_dir()
+    #Create the dsl object, it will house all the ugly state throughout this snap
     pdsl = lib.dsl.dsl(project,destinations)
+
+    #Find the manifest.py file and run it on the dsl object we just created, or
+    #run the default manifest on the dsl object if the project doesn't have a
+    #manifest
+    snap_dir = project.get_snap_dir()
     if os.path.exists(os.path.join(snap_dir,"manifest.py")):
         sys.path.append(snap_dir)
         import manifest
@@ -67,10 +76,12 @@ def snap_project(destname,destinations):
     else:
         lib.dsl.default_run(pdsl)
 
+    #Tag the snap
     if not pdsl.tagmsg is None:
         lib.menu.header("Tagging project")
         project.tag(pdsl.tagmsg)
 
+    #Send a wentlive
     if pdsl.send_wentlive:
         lib.menu.header("Sending a Wentlive email")
         lib.wentlive.send( project,

@@ -10,6 +10,7 @@ def default_run(self):
 class dsl:
 
     def __init__(self,project,destinations):
+        '''Initialize the state for a single snap'''
         self.project = project
         self.destinations = destinations
         self.tagmsg = config.default_tag(project)
@@ -18,10 +19,14 @@ class dsl:
         self.wentlive_dest = config.wentlive_destination
 
     def stage(self,stage,includes=None,excludes=None,destinations=None):
+        '''stage snaps the directory specified by the "stage" arguement to the
+        corresponding directory on the remote servers. Includes and excludes can
+        be specified, and the remote servers being snapped to can be overwritten'''
         if includes is None: includes = []
         if excludes is None: excludes = []
         if destinations is None: destinations = self.destinations
 
+        #TODO document default excludes
         for e in config.default_excludes:
             excludes.append(e)
 
@@ -35,6 +40,7 @@ class dsl:
         return True
 
     def local_script(self,script):
+        '''Runs script locally, assuming it exists in the project's snap directory'''
         lib.menu.header("Running {0} locally".format(script))
         try:
             self.project.snap_script(script)
@@ -45,6 +51,8 @@ class dsl:
 
     #TODO make sure this is already sync'd
     def remote_script(self,script,destinations=None):
+        '''Runs script remotely, assuming it exists in the project's snap directory.
+        Servers the script is run on can be overwritten'''
         if destinations is None: destinations = self.destinations
         for node in destinations:
             lib.menu.header("Running {0} script on {1}".format(script,node.name))
@@ -56,27 +64,36 @@ class dsl:
         return True
 
     def header(self,title):
+        '''Prints a pretty header'''
         return lib.menu.header(title,lib.term.BLUE)
 
+    #TODO lib.menu.choice is something else, make this navigate
     def choice(self,title,menu):
+        '''Gives the user free choice. Robots are so jelly'''
         return lib.menu.navigate(title,menu,clear_before=False)
 
     def get_nodes(self,nodes):
+        '''Returns the node objects with the given node names'''
         ret = []
         for n in nodes:
             ret.append(lib.box.getNode(n))
         return ret
 
     def get_nodes_in_group(self,group):
+        '''Returns the node objects in the given group'''
         return lib.box.getGroup(group)
 
     def tag(self,msg):
+        '''Records that we want to tag the snap with the given snap message'''
         self.tagmsg = msg
 
     def wentlive(self,src=config.wentlive_source,dest=config.wentlive_destination):
+        '''Records that we want to send a wentlive and optionally overwrites source
+        and destination of said wentlive'''
         self.send_wentlive = True
         self.wentlive_src = src
         self.wentlive_dest = dest
 
     def no_wentlive(self):
+        '''Records that we don't want to send a wentlive'''
         self.send_wentlive = False

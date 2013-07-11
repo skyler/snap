@@ -74,7 +74,7 @@ wentlive_destination = 'bar@gmail.com'
 smtpserver = 'localhost'
 
 #Login for the smtp server if needed (in the form of "username:password") or None if not needed
-#smtplocing = "username:password"
+#smtplogin = "username:password"
 smtplogin = None
 
 #Whether or not to use SSL for smtp

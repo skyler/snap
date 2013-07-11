@@ -19,9 +19,11 @@ def print_c(text,colors):
     sys.stdout.flush()
 
 def error(text):
+    '''Print out an error'''
     print_c(text,RED)
 
 def big_error(text):
+    '''Print out an error with more gusto'''
     print_c(text,RED+BOLD)
 
 def clear():
@@ -29,9 +31,11 @@ def clear():
     print(chr(27)+chr(91)+'H'+chr(27)+chr(91)+'J')
 
 def readline():
+    '''Reads a line in from the user and strips out the newline'''
     return sys.stdin.readline().rstrip()
 
 def choice(text,default=False,colors=""):
+    '''Gives the user a y/n choice'''
     if default: yn = "[y]/n"
     else: yn = "y/[n]"
 

@@ -98,9 +98,9 @@ def run(self):
 The `def run(self):` section is required in every manifest. It's needed for snap to have something to
 import. The rest of the statements, and more, will be explained next.
 
-#### self.get_node(nodename)
+#### self.get_nodes(nodenames)
 
-This function can be used to return the node object with the given name. This can be used in
+This function can be used to return the node objects with the given names. This can be used in
 subsequent calls if your deployment procedure requires you to interact with nodes separate from the
 main set you chose to snap to in the initial snap process.
 

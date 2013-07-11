@@ -3,7 +3,9 @@ import email.mime.text
 import smtplib
 import getpass
 
+#TODO make this take in an optional description
 def send(project,src,dest,snap_dest,smtpserver='localhost',login=None,ssl=False):
+    '''Sends out a wentlive email saying that a project has been snapped'''
 
     wentlive = """
 Snapper:     {0}

@@ -8,7 +8,7 @@ projects = {}
 for p in config.projects:
     projects[p.name] = p
 
-#Init nodes and groups
+#Init nodes and groups from config
 nodes = {}
 groups = {}
 for n in config.nodes:

@@ -52,10 +52,13 @@ def navigate(title,menu,depth=-1,clear_before=True,selection_also=False):
         else: return choice_val
 
 def header(title,color=lib.term.GREEN):
+    '''Prints a pretty header'''
     eq = "="*(len(title)+4)
     lib.term.print_c("\n{0}\n= {1} =\n{0}\n\n".format(eq,title),color)
 
 def project_check(project):
+    '''Performs a project check, forcing the user to type in the project name to
+    confirm they know what they're doing'''
     header("Are you sure you want to snap {0}?".format(project.name),color=lib.term.RED)
     lib.term.print_c("Type \"{0}\" if you're sure\n".format(project.name),lib.term.RED)
     if lib.term.readline() != project.name:

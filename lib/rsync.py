@@ -4,6 +4,7 @@ import subprocess
 from lib.util import command_check_stderr
 
 def rsync(project,node,files='.',includes=None,excludes=None):
+    '''Runs the rsync command on project, rsyncing it to node'''
     if includes is None: includes = []
     if excludes is None: excludes = []
 
