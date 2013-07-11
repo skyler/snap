@@ -186,3 +186,20 @@ and only one wentlive can be sent out)
 #### self.no_wentlive()
 
 Use this to specify that no wentlive should be sent. Overwrites whatever is set in `config.py`
+
+### Default manifest
+
+If no `manifest.py` file is found in the `snap/` folder of the project, the default snap procedure
+will be used:
+
+```python
+def default_run(self):
+    self.stage('.')
+```
+
+# Supporters
+
+The following companies/individuals supported the development of snap (and are awesome):
+
+* [Coefficient, Inc](http://www.coefficientinc.com/)
+
