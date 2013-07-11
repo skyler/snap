@@ -49,7 +49,6 @@ class dsl:
             return False
         return True
 
-    #TODO make sure this is already sync'd
     def remote_script(self,script,destinations=None):
         '''Runs script remotely, assuming it exists in the project's snap directory.
         Servers the script is run on can be overwritten'''

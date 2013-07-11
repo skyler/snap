@@ -71,6 +71,11 @@ is, so as long as a shebang line is set the language used does not matter.
 The function will return a boolean representing whether the run failed or not. Any output to stderr
 by the script will constitute and error.
 
+(**NOTE**: This will run whatever is currently present in the remote location. If the first thing your
+snap procedure does is run a remote_script, it's possible it won't have the same version as what's in
+your local version since you haven't actually pushed any changes yet. If this is the case you should
+do a `self.stage('snap/') before you do this call)
+
 ### self.header(string)
 
 Prints out `string` in a nice little header that looks pretty. Has no actual utility other then for
