@@ -46,6 +46,8 @@ Usage is broken down into a few sections:
 
 * [config](doc/config.md)
 * [manifest](doc/manifest.md)
+* [access control](doc/auth.md)
+* [miscellaneous](doc/misc.md)
 
 # Supporters
 
