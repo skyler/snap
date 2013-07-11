@@ -77,3 +77,6 @@ class dsl:
         self.send_wentlive = True
         self.wentlive_src = src
         self.wentlive_dest = dest
+
+    def no_wentlive(self):
+        self.send_wentlive = False
