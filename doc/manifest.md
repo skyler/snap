@@ -76,14 +76,19 @@ by the script will constitute and error.
 Prints out `string` in a nice little header that looks pretty. Has no actual utility other then for
 maybe debugging.
 
-### self.choice(string,menu)
+### self.navigate(string,menu)
 
-Offer the user doing the snapping a choice. `string` will be used as the title, menu is a dictionary,
+Offer the user doing the snapping a menu. `string` will be used as the title, menu is a dictionary,
 where each key is the string which will be shown to the user in the menu selection, and each value is
 what the function will return if that key was selected.
 
-If the value is another map, `self.choice` will call itself on that map instead of returning. In this
+If the value is another map, `self.navigate` will call itself on that map instead of returning. In this
 way you can have nested menus.
+
+### self.choice(text, default=False)
+
+Presents the user with a yes/no choice. You can pass in whether yes or no should be the default value
+(True for yes, False for no). The function returns the corresponding boolean value for the choice.
 
 ### self.tag(string)
 

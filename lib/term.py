@@ -45,15 +45,3 @@ def blockread():
         else:
             break
     return "\n".join(lines)+"\n"
-
-def choice(text,default=False,colors=""):
-    '''Gives the user a y/n choice'''
-    if default: yn = "[y]/n"
-    else: yn = "y/[n]"
-
-    print_c("{0} {1} ".format(text,yn),colors)
-
-    answer = readline()
-    if   answer.lower() == "y": return True
-    elif answer.lower() == "n": return False
-    else:                       return default

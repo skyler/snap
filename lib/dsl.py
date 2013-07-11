@@ -67,10 +67,13 @@ class dsl:
         '''Prints a pretty header'''
         return lib.menu.header(title,lib.term.BLUE)
 
-    #TODO lib.menu.choice is something else, make this navigate
-    def choice(self,title,menu):
-        '''Gives the user free choice. Robots are so jelly'''
+    def navigate(self,title,menu):
+        '''Presents the user with a menu'''
         return lib.menu.navigate(title,menu,clear_before=False)
+
+    def choice(self,text,default=False):
+        '''Gives the user free choice. Robots are so jelly'''
+        return lib.menu.choice(text,default,lib.term.BLUE)
 
     def get_nodes(self,nodes):
         '''Returns the node objects with the given node names'''

@@ -64,3 +64,16 @@ def project_check(project):
     if lib.term.readline() != project.name:
         lib.term.print_c("\nMistypped, are you sure you chose the right project!\n\n",lib.term.RED)
         project_check(project)
+
+
+def choice(text,default=False,colors=""):
+    '''Gives the user a y/n choice'''
+    if default: yn = "[y]/n"
+    else: yn = "y/[n]"
+
+    lib.term.print_c("{0} {1} ".format(text,yn),colors)
+
+    answer = lib.term.readline()
+    if   answer.lower() == "y": return True
+    elif answer.lower() == "n": return False
+    else:                       return default
