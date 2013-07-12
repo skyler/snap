@@ -1,3 +1,10 @@
+#When in test mode snap will effectively (although not literally!) chroot all
+#snap actions specified in the manifest.py into testmode_prefix. So if your
+#project would normall snap to /opt/foo/bar, when in test mode it would get
+#snapped to /tmp/snap_test/opt/foo/bar, and all remote-scripts would be run
+#relative to that directory as well. Please note that this is not a real chroot,
+#and it is still possible to affect things outside the test environment with
+#remote scripts.
 testmode=True
 testmode_prefix="/tmp/snap_test"
 
