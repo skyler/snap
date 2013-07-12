@@ -48,7 +48,6 @@ def snap_project(destname,destinations):
     project = lib.menu.navigate("Choose project",lib.box.projects)
     project.choose_and_checkout_branch()
 
-    #TODO document this
     #If there's a nosnap file we don't actually snap
     nosnap = project.get_nosnap()
     if not nosnap is None:

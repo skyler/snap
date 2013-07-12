@@ -26,7 +26,6 @@ class dsl:
         if excludes is None: excludes = []
         if destinations is None: destinations = self.destinations
 
-        #TODO document default excludes
         for e in config.default_excludes:
             excludes.append(e)
 

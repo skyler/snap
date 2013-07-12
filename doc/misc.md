@@ -25,3 +25,11 @@ question.
 Snap will automatically look for files with the `.nosnap` extension in the root of the project. If it
 finds one it will not continue with the snap, and instead will dump the contents of the file to output
 and send the user back to the main menu.
+
+## Default excludes
+
+In every `self.stage` command (in `manifest.py`) it is possible to specify a list of files, folders,
+or blobs that should be excluded from being altered on the remote host. In addition to this there is
+a global list which will be appended which excludes items like the .git folder and .pyc files. This
+list is alterable in `config.py`, and any items on it can be included on a project-by-project basis by
+adding them to the includes list for a particular `self.stage` command.
