@@ -15,7 +15,7 @@ default_excludes = [
     "*.pyc"
 ]
 
-from lib.project import project
+from lib.project import project #Don't remove this line
 projects = [
 
     #project(
@@ -35,7 +35,7 @@ projects = [
 
 ]
 
-from lib.node import node
+from lib.node import node #Don't remove this line
 nodes = [
 
     #node(
