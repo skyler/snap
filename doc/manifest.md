@@ -116,6 +116,17 @@ and only one wentlive can be sent out)
 
 Use this to specify that no wentlive should be sent. Overwrites whatever is set in `config.py`
 
+### self.get_project_location()
+
+Use this to get the remote directory that snap will use for the project directory (this will be
+whatever is specified in `config.py` unless you've changed it with a `self.set_project_location`.
+
+### self.set_project_location(loc)
+
+Use this to set the remote directory that snap will use for the project directory to a different one
+than the one specified in `config.py`. Do not include the `testmode_prefix`, that will automatically
+be added farther down the pipeline.
+
 # Default manifest
 
 If no `manifest.py` file is found in the `snap/` folder of the project, the default snap procedure

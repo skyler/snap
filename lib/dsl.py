@@ -98,3 +98,11 @@ class dsl:
     def no_wentlive(self):
         '''Records that we don't want to send a wentlive'''
         self.send_wentlive = False
+
+    def get_project_location(self):
+        '''Returns the directory that the project is currently set to snap to'''
+        return self.project.location
+
+    def set_project_location(self,loc):
+        '''Sets the directory that the project will snap to'''
+        self.project.location = loc
