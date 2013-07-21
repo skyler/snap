@@ -74,7 +74,7 @@ by the script will constitute and error.
 (**NOTE**: This will run whatever is currently present in the remote location. If the first thing your
 snap procedure does is run a remote_script, it's possible it won't have the same version as what's in
 your local version since you haven't actually pushed any changes yet. If this is the case you should
-do a `self.stage('snap/') before you do this call)
+do a `self.stage('snap/')` before you do this call)
 
 ### self.header(string)
 
