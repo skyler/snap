@@ -23,6 +23,7 @@ class project:
         self.user     = remote_user
         self.key      = remote_user_key
         self.fetched  = False
+        self.checked  = None
 
     def clone(self):
         '''Clones project into cache, unless it's already there'''
@@ -66,9 +67,7 @@ class project:
 
     def current_branch(self):
         '''Returns the name of the current branch'''
-        cwd = self.get_cache_dir()
-        branch = str(subprocess.check_output(["git","rev-parse","--abbrev-ref","HEAD"],cwd=cwd),'utf8')
-        return branch.rstrip()
+        return self.checked
 
     def current_commit(self):
         '''Returns the name of the current commit'''
@@ -91,6 +90,8 @@ class project:
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","reset","--hard",branch],cwd=cwd)
             subprocess.call(["git","clean","-f","-d","-x"],cwd=cwd)
+
+        self.checked = branch
 
     def tag(self,tagname):
         '''Tags whatever commit the project is on and attempts to push that to the remote repo'''
