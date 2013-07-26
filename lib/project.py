@@ -11,7 +11,7 @@ git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
 
 def cache_path():
     '''Return relative path to repo cache'''
-    return os.path.join('.cache','repos')
+    return os.path.join('.cache-{0}'.format(getpass.getuser()),'repos')
 
 
 class project:
