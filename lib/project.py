@@ -5,13 +5,16 @@ import os
 import subprocess
 import getpass
 import fnmatch
+import config
 
 git_env = os.environ.copy()
 git_env["GIT_SSH"] = os.path.join(os.getcwd(),"ssh_wrapper.sh")
 
 def cache_path():
     '''Return relative path to repo cache'''
-    return os.path.join('.cache-{0}'.format(getpass.getuser()),'repos')
+    return os.path.join( config.project_cache_root,
+                         '.cache-{0}'.format(getpass.getuser()),
+                         'repos' )
 
 
 class project:

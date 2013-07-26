@@ -35,6 +35,13 @@ projects = [
 
 ]
 
+#Snap creates a .cache-{username} directory for each user that uses snap.
+#This directory houses a cached copy of all repos the user has tried to snap
+#This directive sets where those .cache-{username} directories are placed;
+#by default they are placed inside the snap directory, but the could be anywhere
+#that a user has write permissions
+project_cache_root = '.'
+
 from lib.node import node #Don't remove this line
 nodes = [
 
