@@ -127,6 +127,12 @@ Use this to set the remote directory that snap will use for the project director
 than the one specified in `config.py`. Do not include the `testmode_prefix`, that will automatically
 be added farther down the pipeline.
 
+### self.get_chosen_destination_name_and_type():
+
+Use this to get the name and type of what destination was chosen in the menu. It returns a 2-tuple.
+The first item is going to be either the node name or the group name as a string, the second is
+going to be either `"node"` or `"group"`, despending on the type of the first.
+
 # Default manifest
 
 If no `manifest.py` file is found in the `snap/` folder of the project, the default snap procedure

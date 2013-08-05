@@ -9,9 +9,11 @@ def default_run(self):
 
 class dsl:
 
-    def __init__(self,project,destinations):
+    def __init__(self,project,destname,desttype,destinations):
         '''Initialize the state for a single snap'''
         self.project = project
+        self.destname = destname
+        self.desttype = desttype
         self.destinations = destinations
         self.tagmsg = config.default_tag(project)
         self.send_wentlive = config.wentlive_always
@@ -106,3 +108,8 @@ class dsl:
     def set_project_location(self,loc):
         '''Sets the directory that the project will snap to'''
         self.project.location = loc
+
+    def get_chosen_destination_name_and_type(self):
+        '''Returns a tuple of the destination name that was chosen in the menu and
+        either "node" or "group", depending on the type of the choice'''
+        return self.destname,self.desttype

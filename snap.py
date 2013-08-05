@@ -37,13 +37,13 @@ def main():
 def snap_group():
     groupname,group = lib.menu.navigate("Choose group to snap to",lib.box.groups, depth=0,
                                                                                   selection_also=True)
-    snap_project(groupname,group)
+    snap_project(groupname,"group",group)
 
 def snap_node():
     node = lib.menu.navigate("Choose node to snap to",lib.box.nodes,depth=0)
-    snap_project(node.name,[node])
+    snap_project(node.name,"node",[node])
 
-def snap_project(destname,destinations):
+def snap_project(destname,desttype,destinations):
     #Choose the project and the branch/tag of it to checkout
     project = lib.menu.navigate("Choose project",lib.box.projects)
     project.choose_and_checkout_branch()
@@ -63,7 +63,10 @@ def snap_project(destname,destinations):
     lib.menu.project_check(project)
 
     #Create the dsl object, it will house all the ugly state throughout this snap
-    pdsl = lib.dsl.dsl(project,destinations)
+    pdsl = lib.dsl.dsl(project=project,
+                       destname=destname,
+                       desttype=desttype,
+                       destinations=destinations)
 
     #Find the manifest.py file and run it on the dsl object we just created, or
     #run the default manifest on the dsl object if the project doesn't have a
