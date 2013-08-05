@@ -131,7 +131,7 @@ be added farther down the pipeline.
 
 Use this to get the name and type of what destination was chosen in the menu. It returns a 2-tuple.
 The first item is going to be either the node name or the group name as a string, the second is
-going to be either `"node"` or `"group"`, despending on the type of the first.
+going to be either `"node"` or `"group"`, depending on the type of the first.
 
 # Default manifest
 
