@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import copy
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import lib.menu
@@ -45,7 +46,7 @@ def snap_node():
 
 def snap_project(destname,desttype,destinations):
     #Choose the project and the branch/tag of it to checkout
-    project = lib.menu.navigate("Choose project",lib.box.projects)
+    project = copy.deepcopy(lib.menu.navigate("Choose project",lib.box.projects))
     project.choose_and_checkout_branch()
 
     #If there's a nosnap file we don't actually snap
