@@ -86,13 +86,22 @@ class project:
 
     def checkout(self,branch):
         '''Checks out the given branch in the local cache repo, does a hard reset'''
+        clean_args = ["git","clean","-f","-d","-x"]
+
+        exclude = getattr(config, 'git_clean_exclude', None)
+        if exclude:
+            for name in exclude:
+                clean_args.append("-e")
+                clean_args.append(name)
+
         self.fetch()
         cwd = self.get_cache_dir()
         lib.term.print_c("Checking out....\n",lib.term.BLUE)
+
         with open(os.devnull) as null:
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","reset","--hard",branch],cwd=cwd)
-            subprocess.call(["git","clean","-f","-d","-x"],cwd=cwd)
+            subprocess.call(clean_args,cwd=cwd)
 
         self.checked = branch
 

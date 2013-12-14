@@ -93,3 +93,6 @@ smtplogin = None
 
 #Whether or not to use SSL for smtp
 smtpssl = False
+
+#An optional list of files or directories to exclude when git clean is run.
+git_clean_exclude = None
