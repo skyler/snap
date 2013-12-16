@@ -20,6 +20,8 @@ You can also specify:
                  the name of the local user running snap is.
 * `remote_user_key`: The location of the private ssh key to use when snapping. The private ssh key of
                      the local user running snap is used if this isn't specified.
+* `git_clean_exclude`: An optional list of files or directories to exclude when `git clean` is run
+                       during snap.
 
 ## Nodes
 

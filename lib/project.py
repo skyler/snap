@@ -19,7 +19,8 @@ def cache_path():
 
 class project:
 
-    def __init__(self,name,url,location,remote_user=getpass.getuser(),remote_user_key=None):
+    def __init__(self,name,url,location,remote_user=getpass.getuser(),remote_user_key=None,
+            git_clean_exclude=None):
         self.name     = name
         self.url      = url
         self.location = location
@@ -27,6 +28,7 @@ class project:
         self.key      = remote_user_key
         self.fetched  = False
         self.checked  = None
+        self.git_clean_exclude = git_clean_exclude
 
     def clone(self):
         '''Clones project into cache, unless it's already there'''
@@ -88,9 +90,8 @@ class project:
         '''Checks out the given branch in the local cache repo, does a hard reset'''
         clean_args = ["git","clean","-f","-d","-x"]
 
-        exclude = getattr(config, 'git_clean_exclude', None)
-        if exclude:
-            for name in exclude:
+        if self.git_clean_exclude:
+            for name in self.git_clean_exclude:
                 clean_args.append("-e")
                 clean_args.append(name)
 
