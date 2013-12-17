@@ -19,7 +19,8 @@ def cache_path():
 
 class project:
 
-    def __init__(self,name,url,location,remote_user=getpass.getuser(),remote_user_key=None):
+    def __init__(self,name,url,location,remote_user=getpass.getuser(),remote_user_key=None,
+            git_clean_exclude=None):
         self.name     = name
         self.url      = url
         self.location = location
@@ -27,6 +28,7 @@ class project:
         self.key      = remote_user_key
         self.fetched  = False
         self.checked  = None
+        self.git_clean_exclude = git_clean_exclude
 
     def clone(self):
         '''Clones project into cache, unless it's already there'''
@@ -86,13 +88,21 @@ class project:
 
     def checkout(self,branch):
         '''Checks out the given branch in the local cache repo, does a hard reset'''
+        clean_args = ["git","clean","-f","-d","-x"]
+
+        if self.git_clean_exclude:
+            for name in self.git_clean_exclude:
+                clean_args.append("-e")
+                clean_args.append(name)
+
         self.fetch()
         cwd = self.get_cache_dir()
         lib.term.print_c("Checking out....\n",lib.term.BLUE)
+
         with open(os.devnull) as null:
             subprocess.call(["git","checkout",branch],stdout=null,stderr=null,cwd=cwd)
             subprocess.call(["git","reset","--hard",branch],cwd=cwd)
-            subprocess.call(["git","clean","-f","-d","-x"],cwd=cwd)
+            subprocess.call(clean_args,cwd=cwd)
 
         self.checked = branch
 
