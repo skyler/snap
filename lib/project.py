@@ -33,9 +33,10 @@ class project:
     def clone(self):
         '''Clones project into cache, unless it's already there'''
         lib.util.mkdir_p(cache_path())
-        if not os.path.isdir( os.path.join( self.get_cache_dir(), '.git' ) ):
+        cache_dir = self.get_cache_dir()
+        if not os.path.isdir( os.path.join( cache_dir, '.git' ) ):
             lib.term.print_c("Cloning...\n",lib.term.BLUE)
-            subprocess.call(["git","clone",self.url],cwd=cache_path(),env=git_env)
+            subprocess.call(["git","clone",self.url,cache_dir],cwd=cache_path(),env=git_env)
 
     def fetch(self):
         '''Fetches all remote data'''
