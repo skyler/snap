@@ -35,7 +35,7 @@ The bread and butter of snap, `stage` is used to actually put files in their rem
 specified by the `location` directive in the project configuration).
 
 `directory` is the directory within the project you want to snap. For instance, if you only want to
-snap the directory `imgs` in your project, you would call: `self.stage('imgs/')`, and snap would
+snap the directory `imgs` in your project, you would call: `self.stage('imgs')`, and snap would
 synchronize the local `<project root>/imgs` folder with the remote `<location>/imgs` folder.
 
 `includes` and `excludes` are lists of strings which are passed through to rsync. They can be the
