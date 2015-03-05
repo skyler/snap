@@ -147,7 +147,7 @@ class project:
         self.checkout(branch)
         return branch
 
-    def snap_script(self,script):
+    def snap_script(self,script,**kwargs):
         '''Runs a script in the snap directory'''
         cache_path = self.get_cache_dir()
         snap_path  = self.get_snap_dir()
@@ -155,7 +155,7 @@ class project:
         fn_rel = os.path.join( "snap",    script )
         if os.path.isfile(fn_abs):
             os.system("chmod +x {0}".format(fn_abs))
-            lib.util.command_check_stderr([fn_rel], cwd=cache_path)
+            lib.util.command_check_error([fn_rel], cwd=cache_path,**kwargs)
 
     def get_nosnap(self):
         '''Returns a nosnap message that exists in the root of the project, or None'''

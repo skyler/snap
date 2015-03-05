@@ -1,9 +1,9 @@
 import config
 import os
 import subprocess
-from lib.util import command_check_stderr
+from lib.util import command_check_error
 
-def rsync(project,node,files='.',includes=None,excludes=None):
+def rsync(project,node,files='.',includes=None,excludes=None,**kwargs):
     '''Runs the rsync command on project, rsyncing it to node'''
     if includes is None: includes = []
     if excludes is None: excludes = []
@@ -34,4 +34,4 @@ def rsync(project,node,files='.',includes=None,excludes=None):
 
     print(command)
 
-    command_check_stderr(command)
+    command_check_error(command,**kwargs)
