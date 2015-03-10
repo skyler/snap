@@ -17,13 +17,11 @@ def dict_sorted(d):
 
 def command_check_error(command,cwd=".",fail_on_stderr=True):
     '''Perform a command, piping out both stdout and stderr.
-    
-    #### FIXME
-    By default, if anything comes out on stderr it will throw an exception.
-    If `check_exit_code` is `True`, the command's exit code, if nonzero, will
-    throw an exception. In this configuration, output to stderr, whatever it is,
-    will be ignored as an error condition. Its output will still be raised
-    as the exception body if the command's exit code was nonzero, however.
+
+    An exception will be raised if command returns a nonzero exit code.
+    An exception will also be raised if command writes anything to stdout.
+    This behavior can be disabled by passing False as the argument to
+    fail_on_stderr.
     '''
     proc = subprocess.Popen(command, cwd=cwd,
                             stdout=None, # print to terminal

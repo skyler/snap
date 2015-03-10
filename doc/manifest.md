@@ -50,17 +50,18 @@ send files to a different set of nodes, you can pass a list of node objects (obt
 
 The function will return a boolean of whether or not the run was successful.
 
-### self.local_script(scriptname)
+### self.local_script(scriptname, fail_on_stderr=True)
 
 This will run a script in the local cache of the project. This script should be located alongside
 `manifest.py` in the `snap/` folder in the repository, however the script will be run with the `cwd`
 being the root of the repository (the parent of the `snap/` folder). The script will be run as is,
 so as long as a shebang line is set the language used does not matter.
 
-The function will return a boolean representing whether the run failed or not. Any output to stderr
-by the script will constitute and error.
+The function will return a boolean representing whether the run failed or not. A nonzero exit code
+from `scriptname` will constitute an error. By default, any output to stderr by the script will also
+constitute an error. This behavior can be changed by passing `False` as the argument to `fail_on_stderr`.
 
-### self.remote_script(scriptname, destinations=None)
+### self.remote_script(scriptname, destinations=None, fail_on_stderr=True)
 
 This will run a script on all of the remote machines either in the set chosen in the menu or the ones
 in `destinations` (see `self.stage` for more detail on `destinations`). The script should be located
@@ -68,8 +69,9 @@ alongside the `manifest.py` in the `snap/` directory in the root of the project,
 `cwd` being the root of the repository (the parent of the `snap/` folder). The script will be run as
 is, so as long as a shebang line is set the language used does not matter.
 
-The function will return a boolean representing whether the run failed or not. Any output to stderr
-by the script will constitute and error.
+The function will return a boolean representing whether the run failed or not. A nonzero exit code
+from `scriptname` will constitute an error. By default, any output to stderr by the script will also
+constitute an error. This behavior can be changed by passing `False` as the argument to `fail_on_stderr`.
 
 (**NOTE**: This will run whatever is currently present in the remote location. If the first thing your
 snap procedure does is run a remote_script, it's possible it won't have the same version as what's in
