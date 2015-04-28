@@ -40,11 +40,11 @@ class dsl:
                 return False
         return True
 
-    def local_script(self,script):
+    def local_script(self,script,**kwargs):
         '''Runs script locally, assuming it exists in the project's snap directory'''
         lib.menu.header("Running {0} locally".format(script))
         try:
-            self.project.snap_script(script)
+            self.project.snap_script(script,**kwargs)
         except Exception as e:
             lib.term.big_error(str(e))
             return False
